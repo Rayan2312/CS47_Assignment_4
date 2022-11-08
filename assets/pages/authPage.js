@@ -2,10 +2,18 @@ import { StyleSheet, Text, View, Pressable } from "react-native";
 import { Themes, btnTextSize } from "../Themes";
 import images from "../Images/images";
 import { AntDesign } from '@expo/vector-icons'; 
+import { useSpotifyAuth } from "../../utils";
 
-export default function AuthPage({navigation, route, useSpotifyAuth}){
+
+
+export default function AuthPage({navigation}){
+
+    const { token, tracks, getSpotifyAuth } = useSpotifyAuth(true);
+
     return (<View style={styles.container}>
-        <Pressable style={styles.btn} onPress={()=>useSpotifyAuth()}>
+        <Pressable style={styles.btn} onPress={()=>{ token === undefined || tracks.length === 0?
+            getSpotifyAuth() : navigation.navigate('mainPage', {tracks})
+            }}>
         <View style={styles.btnRow}>
         <AntDesign name="login" size={24} color="white" />
         <Text style={styles.text}>CONNECT WITH SPOTIFY</Text>

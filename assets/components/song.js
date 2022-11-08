@@ -1,10 +1,14 @@
-import { StyleSheet, Text, Image, View, Dimensions } from "react-native";
-import { Themes, btnTextSize, trackTextSize } from "../Themes";
+import { StyleSheet, Text, Image, View, Dimensions, Pressable } from "react-native";
+import { Themes, trackTextSize, iconSize } from "../Themes";
+import { AntDesign } from '@expo/vector-icons';
 
-export default function Song({title, artist, index, image, album, duration}){
-    return (<View style={styles.container}>
+export default function Song({title, artist, index, image, album, duration, navigation, artistImage, tracks, prevUri}){
+    let song = {title, artist, index, image, album, duration, artistImage, prevUri};
+
+    return (<Pressable onPress={()=>{navigation.navigate('songDetailsPage', {song, tracks})}}>
+    <View style={styles.container}>
         <View style={styles.tinyBox}>
-        <Text style={ styles.text} numberOfLines={1}>{index}</Text>
+        <AntDesign onPress={(e)=>{ e.stopPropagation(); navigation.navigate('songPreviewPage', {prevUri})}} name="play" size={iconSize} color="green" />
         </View>
 
         <Image style={[styles.mediumBox]} source={ {uri: image} } />
@@ -21,7 +25,8 @@ export default function Song({title, artist, index, image, album, duration}){
         <View style={styles.tinyBox}>
         <Text style={styles.text} numberOfLines={1}>{duration}</Text>
         </View>
-         </View>);
+         </View>
+         </Pressable>);
 }
 
 const styles = StyleSheet.create({
@@ -30,6 +35,7 @@ const styles = StyleSheet.create({
       justifyContent: "space-around",
       alignItems: "center",
       flexDirection: "row",
+      marginTop: "2%",
 
     }, 
     tinyBox: {

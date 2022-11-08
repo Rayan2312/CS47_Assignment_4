@@ -5,24 +5,32 @@ import { NavigationContainer} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AuthPage from "./assets/pages/authPage";
 import MainPage from "./assets/pages/mainPage";
+import SongDetailPage from "./assets/pages/songDetailPage";
+import SongPreviewPage from "./assets/pages/songPreviewPage";
+import Constants from "expo-constants";
 
 export default function App() {
-  // Pass in true to useSpotifyAuth to use the album ID (in env.js) instead of top tracks
-  const { token, tracks, getSpotifyAuth } = useSpotifyAuth(true);
 
   const Stack = createStackNavigator();
-  let contentDisplayed = token === undefined || tracks.length === 0? <AuthPage useSpotifyAuth={getSpotifyAuth} /> : <MainPage tracks={tracks} />;
-  return ( <View style={styles.container}>
-    {contentDisplayed}
-  </View>
+
+
+  return ( 
+    <NavigationContainer>
+      <Stack.Navigator  style={styles.container}>
+      <Stack.Screen options={{headerStyle: styles.container, headerTitleStyle: styles.title}} name="authPage" component={AuthPage} />
+      <Stack.Screen options={{headerShown: false}} name="mainPage" component={MainPage} />
+      <Stack.Screen options={{headerStyle: styles.container, headerTitleStyle: styles.title, title: "", headerTintColor: Themes.colors.white}} name="songDetailsPage" component={SongDetailPage}/>
+      <Stack.Screen options={{headerStyle: styles.container, headerTitleStyle: styles.title, title: "", headerTintColor: Themes.colors.white}} name="songPreviewPage" component={SongPreviewPage}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Themes.colors.background,
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1,
   },
+  title: {
+    color: Themes.colors.white,
+  }
 });
